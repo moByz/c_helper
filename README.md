@@ -1,16 +1,64 @@
+# Autorisation
+
+## Добавить в проект новый класс
+## Дать имя (DataBaseModel или др.) 
+## В появившемся окне выбрать Code First из базы данных
+## Нажать на кнопку "Создать соединение"
+## Если источник данных выбран не "Microsoft SQL Server", то нажать кнопку "Изменить" и выбрать Microsoft SQL Server
+## Чтобы узнать имя сервера откройте Microsoft SQL Server, кликните ПКМ по текущему подключению->Свойства
+## Откроется окно, скопируйте имя сервера и вставьте в окно подключения к БД 
+## Т.к. мы подключаемся к локальному серверу, оставляем тип аутентификации "Проверка подлинности Windows"
+## Откроется окно, нажмите "Далее"
+## В открывшемся окне выберите таблицы, с которыми вы будете работать и нажмите "Готово"
+``В проект добавятся классы с структурой таблиц.
+Добавьте на форму 2 textbox и кнопку
+Код на нажатие кнопки:``
+## Код 
+//проверка на ввод данных
+if ((textBox1.Text == "") || (textBox1.Text == "")) {
+    MessageBox.Show("Введите логин и пароль");
+    return;
+}
+//try для обработки ошибок
+try {
+    DataBaseModel db = new DataBaseModel(); //модель БД
+    //создание объекта user
+    // FirstOrDefault означает поиск по условию, если ничего не нашлось возвращ. null
+    User u = db.User.FirstOrDefault(x => x.Email == textBox1.Text && x.Password == textBox2.Text);
+    if (u != null) {
+        //проверка роли 
+        switch (u.RoleId) {
+            case "R": MessageBox.Show("Вы вошли как Runner"); break;
+            case "C": MessageBox.Show("Вы вошли как Coordinator"); break;
+            case "A": MessageBox.Show("Вы вошли как Administrator"); break;
+        }
+    }
+    else {
+        MessageBox.Show("Неверный логин/пароль");
+        return;
+    }
+}
+catch (Exception err) {
+    MessageBox.Show("Произошла ошибка: \n" + err.Message);
+}
+
 # Registration
 
-## Добвить форму RegistrationForm
-## В коде авторизации изменить следующий раздел
+**Добвить форму RegistrationForm
+**В коде авторизации изменить следующий раздел
+```
 switch (u.RoleId) {
   case "R": RunnerMenu f = new RunnerMenu(); f.ShowDialog(); break;
   case "C": MessageBox.Show("Вы вошли как Coordinator"); break;
   case "A": MessageBox.Show("Вы вошли как Administrator"); break;
 }
-## Добавить на форму авторизации кнопку «Регистрация», обработчик нажатия на эту кнопку
+```
+**Добавить на форму авторизации кнопку «Регистрация», обработчик нажатия на эту кнопку
+```
 RunnerMenu f = new RunnerMenu();
+```
 f.ShowDialog();
-## Конструктор формы RegistrationForm
+**Конструктор формы RegistrationForm
 public RegistrationForm() {
     InitializeComponent();
     // загрузка списка стран
@@ -68,46 +116,3 @@ catch (Exception err) {
     MessageBox.Show(err.Message);
 }
 
-# Autorisation
-
-## Добавить в проект новый класс
-## Дать имя (DataBaseModel или др.) 
-## В появившемся окне выбрать Code First из базы данных
-## Нажать на кнопку "Создать соединение"
-## Если источник данных выбран не "Microsoft SQL Server", то нажать кнопку "Изменить" и выбрать Microsoft SQL Server
-## Чтобы узнать имя сервера откройте Microsoft SQL Server, кликните ПКМ по текущему подключению->Свойства
-## Откроется окно, скопируйте имя сервера и вставьте в окно подключения к БД 
-## Т.к. мы подключаемся к локальному серверу, оставляем тип аутентификации "Проверка подлинности Windows"
-## Откроется окно, нажмите "Далее"
-## В открывшемся окне выберите таблицы, с которыми вы будете работать и нажмите "Готово"
-``В проект добавятся классы с структурой таблиц.
-Добавьте на форму 2 textbox и кнопку
-Код на нажатие кнопки:``
-## Код 
-//проверка на ввод данных
-if ((textBox1.Text == "") || (textBox1.Text == "")) {
-    MessageBox.Show("Введите логин и пароль");
-    return;
-}
-//try для обработки ошибок
-try {
-    DataBaseModel db = new DataBaseModel(); //модель БД
-    //создание объекта user
-    // FirstOrDefault означает поиск по условию, если ничего не нашлось возвращ. null
-    User u = db.User.FirstOrDefault(x => x.Email == textBox1.Text && x.Password == textBox2.Text);
-    if (u != null) {
-        //проверка роли 
-        switch (u.RoleId) {
-            case "R": MessageBox.Show("Вы вошли как Runner"); break;
-            case "C": MessageBox.Show("Вы вошли как Coordinator"); break;
-            case "A": MessageBox.Show("Вы вошли как Administrator"); break;
-        }
-    }
-    else {
-        MessageBox.Show("Неверный логин/пароль");
-        return;
-    }
-}
-catch (Exception err) {
-    MessageBox.Show("Произошла ошибка: \n" + err.Message);
-}
