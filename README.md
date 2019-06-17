@@ -72,6 +72,7 @@ public RegistrationForm() {
     }
 }
 // Обработчик нажатия кнопки «Регистрация»
+```C#
 string name = textBox1.Text,
     lName = textBox2.Text,
     email = textBox3.Text,
@@ -115,4 +116,4 @@ try {
 catch (Exception err) {
     MessageBox.Show(err.Message);
 }
-
+```
