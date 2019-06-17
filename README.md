@@ -58,7 +58,7 @@ switch (u.RoleId) {
 RunnerMenu f = new RunnerMenu();
 f.ShowDialog();
 ```
-* Конструктор формы RegistrationForm
+## Код
 ```C#
 public RegistrationForm() {
     InitializeComponent();
